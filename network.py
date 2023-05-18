@@ -31,7 +31,7 @@ normal_sampling = torch.tensor([-1.64761461, -1.45512392, -1.33302146, -1.241184
                                 0.4824587,  0.50485098,  0.52776141,  0.55123978,  0.57534225, 0.6001325,  0.62568332,
                                 0.65207844,  0.67941502,  0.70780676, 0.73738809,  0.76831968,  0.80079598,  0.83505566,
                                 0.87139658, 0.91019756,  0.95195146,  0.99731721,  1.0472058,  1.10293101, 1.16649474,
-                                1.24118489,  1.33302146,  1.45512392,  1.64761461]).cuda() * numpy.sqrt(2.0) / 0.96
+                                1.24118489,  1.33302146,  1.45512392,  1.64761461]) * numpy.sqrt(2.0) / 0.96  # .cuda() * numpy.sqrt(2.0) / 0.96
 
 
 def center_function(f, mult=1.0):
@@ -72,13 +72,15 @@ class Linear(Module):
         super(Linear, self).__init__()
         self.in_features = in_features
         self.out_features = out_features
-        self.weight = Parameter(torch.Tensor(out_features, in_features).cuda())
+        # self.weight = Parameter(torch.Tensor(out_features, in_features).cuda())
+        self.weight = Parameter(torch.Tensor(out_features, in_features))
 
         self.stdv = numpy.sqrt(1-beta**2) / math.sqrt(in_features*1.0)
         self.beta = beta
 
         if bias:
-            self.bias = Parameter(torch.Tensor(out_features).cuda())
+            # self.bias = Parameter(torch.Tensor(out_features).cuda())
+            self.bias = Parameter(torch.Tensor(out_features))
         else:
             self.register_parameter('bias', None)
         self.reset_parameters()
